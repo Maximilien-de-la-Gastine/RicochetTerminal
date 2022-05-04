@@ -1,0 +1,17 @@
+bluePlanet 4 10
+redPlanet 14 15
+greenPlanet 15 4
+yellowPlanet 7 2
+blueStar 3 6
+redStar 14 2
+greenStar 15 11
+yellowStar 7 13
+blueCircle 11 7
+redCircle 14 15
+greenCircle 5 3
+yellowCircle 12 10
+blueTriangle 10 14
+redTriangle 6 8
+greenTriangle 2 14
+yellowTriangle 10 5
+multicolorStorm 13 8
