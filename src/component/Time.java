@@ -2,23 +2,30 @@ package component;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class Time {
+    public static void main(String[] args) {
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-//    Timer timer = new Timer();
-//
-//    timer.schedule(new TimerTask() {
-//
-//        int i = 20;
-//        public void run() {
-//            System.out.println(i);
-//            i--;
-//
-//            if (i < 0) {
-//                timer.cancel();
-//
-//            }
-//        }
+        final Runnable runnable = new Runnable() {
+            int countdownStarter = 20;
 
+            public void run() {
+
+                System.out.println(countdownStarter);
+                countdownStarter--;
+
+                if (countdownStarter < 0) {
+                    System.out.println("Timer Over!");
+                    scheduler.shutdown();
+                }
+            }
+        };
+        scheduler.scheduleAtFixedRate(runnable, 0, 1, SECONDS);
+    }
 }
 
