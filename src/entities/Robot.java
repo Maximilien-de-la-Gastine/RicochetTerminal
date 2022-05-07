@@ -22,7 +22,6 @@ public class Robot {
 
     private final Cell[][] board = Board.getBoard();
 
-    private int countMove = Player.getMoveCount();
 
     private static ArrayList<Cell> authorizedPosition = new ArrayList<Cell>();
 
@@ -59,7 +58,7 @@ public class Robot {
      *
      * @param cell
      * @return false is la cellule ne comporte pas de murs
-     */
+
     public boolean isWallOnCell(Cell cell) {
         for (Wall wall : wallList) {
             if (wall.getCell().equals(cell)) {
@@ -68,7 +67,7 @@ public class Robot {
             }
         }
     }
-
+     */
 
     int[] cellPositionList = new int[4];
 
@@ -146,7 +145,7 @@ public class Robot {
     public void changeRobotCell(Robot robot, Cell newCell) {
         if (isValidMove(newCell)) {
             robot.setCell(newCell);
-            countMove++;
+            Player.getRealMoveCount();
         }
     }
 

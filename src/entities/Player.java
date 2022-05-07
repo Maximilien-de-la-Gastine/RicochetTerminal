@@ -20,14 +20,29 @@ public class Player {
     public static int getPlayerNumber() {
         return playerNumber;
     }
+    public static void setPlayerNumber(int playerNumber) {
+        Player.playerNumber = playerNumber;
+    }
+
+    //Nom des joueurs
+    private static  ArrayList<String> playerNameList = new ArrayList<>();
+    public void setPlayerNameList(ArrayList<String> playerNameList) {
+        this.playerNameList = playerNameList;
+    }
+
+
+
+    public static ArrayList<String> getPlayerNameList() {
+        return playerNameList;
+    }
 
     //Nombre de coups effectués par le joueur
     private static int realMoveCount;
     //Nombre de coups annoncés par le joueur
     private int announcedMoveCount;
 
-    public static int getMoveCount() {
-        return moveCount;
+    public static int getRealMoveCount() {
+        return realMoveCount;
     }
 
     private String name;
@@ -80,6 +95,7 @@ public class Player {
         if(announcedMoveCount == realMoveCount){
 
         }
+        return false;
     }
 
 

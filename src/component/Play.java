@@ -36,10 +36,10 @@ public class Play {
         //TODO Ajouter le score et le vainqueur
     }
 
-    public
-    for(Player player : playerList ){
-        if()
-    }
+    //public
+    //for(Player player : playerList ){
+    //    if()
+    //}
 
 
     /**
@@ -60,17 +60,16 @@ public class Play {
 
         ArrayList<Player> copyPlayerList = new ArrayList<>(this.playerList);
 
-
-                //TODO créer fonction StartTimer
+        //TODO créer fonction StartTimer
         //startTimer();
 
         //Ajoute un point au joueur ayant effectué le moins de coups
         Counter.addWinnerPlayerAPoint(Player.playerWithLessMove());
 
-        if(Player.isReady(playerWithShortestPath) == true){
+        //if(Player.isReady(playerWithShortestPath) == true){
             copyPlayerList.remove(playerWithShortestPath);
 
-        }
+        //}
     }
 
 

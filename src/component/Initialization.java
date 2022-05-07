@@ -28,12 +28,10 @@ public class Initialization {
 
     private int playerNumber = Player.getPlayerNumber();
 
+    //Nom des joueurs
+    private ArrayList<String> playerNameList = Player.getPlayerNameList();
 
 
-
-    //Liste de noms de joueurs initialisés
-    private ArrayList<String> playerNameList = new ArrayList<>();
-    //TODO : Relier cette liste à l'interface graphique a chaque fois qu'un nom de joueur est rempli
 
     private Cell [][]board = Board.getBoard();
 
@@ -84,11 +82,11 @@ public class Initialization {
      * Le nombre de joueurs est trouvé en fonction du nombre de noms de joueurs initialisés
      */
     public void createPlayer(){
-        playerNumber = playerNameList.size();
         for (int i=0; i<playerNumber; i++){
             //On récupère le nom des joueurs dans la liste des joueurs
             String playerName = playerNameList.get(i);
-            Player player = new Player(playerName);
+            int score = 0;
+            Player player = new Player(playerName, 0);
             playerList.add(player);
         }
     }
@@ -98,7 +96,7 @@ public class Initialization {
      * toutes les cellules sauf celles avec une carte
      */
     public void initializeCellListWithoutCard() {
-        //On commence par ajouter toutes les cellues possible
+        //On commence par ajouter toutes les cellules possibles
         for (Cell cell : cellList) {
             cellListWhitoutCard.add(cell);
         }
@@ -129,7 +127,7 @@ public class Initialization {
                 Color color = Color.RED;
                 //On crée la cellule aléatoire du robot ou il n'y a pas de carte
                 Cell robotCell = getRandomCellWithoutCard();
-                //Onn supprime la cellule du robot de la liste pour ne pas placer 2 robots au même endroit
+                //On supprime la cellule du robot de la liste pour ne pas placer 2 robots au même endroit
                 cellListWhitoutCard.remove(robotCell);
                 int x = robotCell.getX();
                 int y = robotCell.getY();
@@ -168,16 +166,4 @@ public class Initialization {
             wallList.add(wall);
         }
     }
-
-
-
-
-
-
-    }
-
-
-
-
-
 }
