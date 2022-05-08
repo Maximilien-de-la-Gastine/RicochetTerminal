@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class Cell {
 
-    private int x;
-    private int y;
+    private int row;
+    private int col;
 
 
 
@@ -16,17 +16,17 @@ public class Cell {
         return cellList;
     }
 
-    public Cell(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Cell(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
 
-    public int getX() {
-        return x;
+    public int getRow() {
+        return row;
     }
 
-    public int getY() {
-        return y;
+    public int getCol() {
+        return col;
     }
 
 
@@ -34,7 +34,7 @@ public class Cell {
     public boolean equals(Object cell) {
         if (this == cell) return true;
         if (!(cell instanceof Cell)) return false;
-        return getX() == ((Cell) cell).getX() && getY() == ((Cell) cell).getY();
+        return getRow() == ((Cell) cell).getRow() && getCol() == ((Cell) cell).getCol();
     }
 
 }

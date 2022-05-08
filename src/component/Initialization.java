@@ -21,6 +21,7 @@ public class Initialization {
     private ArrayList<Cell> cellList = Cell.getCellList();
     private ArrayList<Card> cardList = Card.getCardList();
     private ArrayList<Player> playerList = Player.getPlayerList();
+    private  ArrayList<Robot> robotList = Robot.getRobotList();
 
     //Liste des cellules ne contenant pas de cartes
     private ArrayList<Cell> cellListWhitoutCard = new ArrayList<>();
@@ -97,17 +98,15 @@ public class Initialization {
      */
     public void initializeCellListWithoutCard() {
         //On commence par ajouter toutes les cellules possibles
-        for (Cell cell : cellList) {
-            cellListWhitoutCard.add(cell);
-        }
+        cellListWhitoutCard.addAll(cellList);
         //on retire ensuite toutes les cellules avec une carte
         for (Card card : cardList) {
-            cellListWhitoutCard.remove(card);
+            cellListWhitoutCard.remove(card.getCell());
         }
     }
 
     /**
-     * Verifie que l'on ne va pas placer un robot sur une cellule avec une carte.
+     * Vérifie que l'on ne va pas placer un robot sur une cellule avec une carte.
      * @return
      */
     public Cell getRandomCellWithoutCard() {
@@ -129,9 +128,8 @@ public class Initialization {
                 Cell robotCell = getRandomCellWithoutCard();
                 //On supprime la cellule du robot de la liste pour ne pas placer 2 robots au même endroit
                 cellListWhitoutCard.remove(robotCell);
-                int x = robotCell.getX();
-                int y = robotCell.getY();
-                Robot robot = new Robot(board[x][y], color);
+                Robot robot = new Robot(robotCell, color);
+                robotList.add(robot);
                 color = color.next();
             }
         }

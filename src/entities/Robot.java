@@ -44,7 +44,11 @@ public class Robot {
         this.cell = cell;
     }
 
-    private static ArrayList<Robot> robotList = new ArrayList<Robot>();
+    public static ArrayList<Robot> getRobotList() {
+        return robotList;
+    }
+
+    private static ArrayList<Robot> robotList = new ArrayList<>();
 
 
     public Robot(Cell cell, Color color) {
@@ -73,10 +77,10 @@ public class Robot {
 
     public void initializeCellPositionList(Cell cell) {
         //
-        cellPositionList[0] = cell.getX();
-        cellPositionList[1] = cell.getY();
-        cellPositionList[2] = 16 - cell.getX();
-        cellPositionList[3] = 16 - cell.getY();
+        cellPositionList[0] = cell.getRow();
+        cellPositionList[1] = cell.getCol();
+        cellPositionList[2] = 16 - cell.getRow();
+        cellPositionList[3] = 16 - cell.getCol();
     }
 
     public void initializeWallPositionList() {
@@ -89,7 +93,7 @@ public class Robot {
 
     //TODO refaire cette méthode plus simplement
     public void getLeftAndTopPositions(Cell cell) {
-        //on initialise les liste de positions et le nombre de cellules à parcourir au maximum
+        //on initialise les listes de positions et le nombre de cellules à parcourir au maximum
         initializeCellPositionList(cell);
         initializeWallPositionList();
         for (int j = 0; j < 2; j++) {
@@ -97,18 +101,18 @@ public class Robot {
                 for (Wall wall : wallList) {
                     if ((i == 0 && wall.getDirection() == wallDirectionList[j]) || cellPositionList[j] - i == 0) {
                         if (j == 0) {
-                            authorizedPosition.add(board[cell.getX() - i][cell.getY()]);
+                            authorizedPosition.add(board[cell.getRow() - i][cell.getCol()]);
                         }
                         if (j == 1) {
-                            authorizedPosition.add(board[cell.getX()][cell.getY() - i]);
+                            authorizedPosition.add(board[cell.getRow()][cell.getCol() - i]);
                         }
                     }
-                    if (((cellPositionList[j] - i == wall.getCell().getX()) && (wall.getDirection() == wallDirectionList[j + 2]))) {
+                    if (((cellPositionList[j] - i == wall.getCell().getRow()) && (wall.getDirection() == wallDirectionList[j + 2]))) {
                         if (j == 0) {
-                            authorizedPosition.add(board[cell.getX() - i][cell.getY()]);
+                            authorizedPosition.add(board[cell.getRow() - i][cell.getCol()]);
                         }
                         if (j == 1) {
-                            authorizedPosition.add(board[cell.getX()][cell.getY() - i]);
+                            authorizedPosition.add(board[cell.getRow()][cell.getCol() - i]);
                         }
                         break;
                     }
