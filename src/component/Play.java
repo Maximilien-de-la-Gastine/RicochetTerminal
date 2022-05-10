@@ -6,6 +6,7 @@ import entities.Player;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class Play {
 
@@ -23,7 +24,16 @@ public class Play {
 
     private ArrayList<Card> cardList = Card.getCardList();
 
+    //Permet de trier les joueurs en fonction du nombre de coups annoncés
+    private static TreeMap<Integer, Player> sortPlayerByLessCountMap = new TreeMap<>();
 
+    public static void setSortPlayerByLessCountMap(TreeMap<Integer, Player> sortPlayerByLessCountMap) {
+        Play.sortPlayerByLessCountMap = sortPlayerByLessCountMap;
+    }
+
+    public static TreeMap<Integer, Player > getSortPlayerByLessCountMap() {
+        return sortPlayerByLessCountMap;
+    }
 
     public void play() throws FileNotFoundException {
         Initialization initialization = new Initialization();

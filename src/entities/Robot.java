@@ -138,6 +138,14 @@ public class Robot {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return "Robot{" +
+                "color=" + color +
+                ", cell=" + cell +
+                '}';
+    }
+
     /**
      * Cette fonction vérifie si la nouvelle cellule est valide,
      * si oui, la cellule du robot est changé en nouvelle cellule.

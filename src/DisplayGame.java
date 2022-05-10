@@ -1,29 +1,33 @@
+import com.sun.source.tree.Tree;
 import component.*;
 import entities.*;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
+
+import static java.lang.Integer.parseInt;
 
 public class DisplayGame {
 
 
 
     //Nom des joueurs
-    private ArrayList<String> playerNameList = Player.getPlayerNameList();
+    private static ArrayList<String> playerNameList = Player.getPlayerNameList();
 
-    private Cell[][]board = Board.getBoard();
+    private static Cell[][]board = Board.getBoard();
 
-    private ArrayList<Wall> wallList = Wall.getWallList();
-    private ArrayList<Card> cardList = Card.getCardList();
-    private ArrayList<Player> playerList = Player.getPlayerList();
+    private static ArrayList<Wall> wallList = Wall.getWallList();
+    private static ArrayList<Card> cardList = Card.getCardList();
+    private static ArrayList<Player> playerList = Player.getPlayerList();
 
-    private  ArrayList<Robot> robotList = Robot.getRobotList();
+    private  static ArrayList<Robot> robotList = Robot.getRobotList();
 
-    private int countDownStart = Time.getCountdownStarter();
+    private static int countDownStart = Time.getCountdownStarter();
 
+//private int  announcedMoveCount = Player.getAnnouncedMoveCount();
+    private static TreeMap<Integer, Player> sortPlayerByLessCountMap = Play.getSortPlayerByLessCountMap();
 
-    public void playerNumberInitialization(){
+    public static void playerNumberInitialization(){
         System.out.println("Nombre de joueurs");
         Scanner scanner = new Scanner(System.in);
         Player.setPlayerNumber(scanner.nextInt());
@@ -36,7 +40,7 @@ public class DisplayGame {
         }
     }
 
-    public boolean isValidPlayerNumber(){
+    public static boolean isValidPlayerNumber(){
         int playerNumber = Player.getPlayerNumber();
         if(playerNumber > 1 && playerNumber < 9){
             return true;
@@ -44,7 +48,7 @@ public class DisplayGame {
         return false;
     }
 
-    public void playerNameInitialization(){
+    public static void playerNameInitialization(){
         Scanner scanner = new Scanner(System.in);
         for(int i=0; i< Player.getPlayerNumber() ;i++){
             int playerNumber = i + 1;
@@ -55,13 +59,13 @@ public class DisplayGame {
         }
     }
 
-    public void displayBoard() {
+    public static void displayBoard() {
         String concat;
         for (int i = 0; i < 18; i++) {
-            concat = "";
+            concat = " ";
             for (int j = 0; j < 18; j++) {
                 if((j == 0 || j == 17) && (i !=0 && i != 17)) concat =  concat + "|";
-                if((i == 0 || i == 17) && (j !=0 && j != 17)) concat =  concat + "____ ";
+                if((i == 0 || i == 17) && (j !=0 && j != 17)) concat =  concat + "__ ";
                 else{
                     for(Wall wall : wallList){
                         if (i == wall.getCell().getRow() && j == wall.getCell().getCol()) {
@@ -76,10 +80,12 @@ public class DisplayGame {
                     }
                     for(Robot robot : robotList){
                         if(i == robot.getCell().getRow() && j == robot.getCell().getRow()){
-                            concat = concat + "R";
+                            if(robot.getColor().toString().equals("RED")) concat = concat + "R";
+                            if(robot.getColor().toString().equals("YELLOW")) concat = concat + "Y";
+                            if(robot.getColor().toString().equals("BLUE")) concat = concat + "B";
+                            if(robot.getColor().toString().equals("GREEN")) concat = concat + "G";
                         }
                     }
-                    if(concat.contains(""))
                     concat = concat + "  ";
                 }
             }
@@ -90,7 +96,7 @@ public class DisplayGame {
     private Player playerWithShortestPath;
 
 
-    public void play() throws FileNotFoundException {
+    public static void play() throws FileNotFoundException {
         Initialization initialization = new Initialization();
         initialization.initializeGame();
         while(!isGameOver()){
@@ -99,39 +105,68 @@ public class DisplayGame {
         //TODO Ajouter le score et le vainqueur
     }
 
-    public boolean isGameOver(){
+    public static boolean isGameOver(){
         return cardList.isEmpty();
     }
 
-    private String actualCardName = Play.getActualCardName();
+    private static String actualCardName = Play.getActualCardName();
 
     /**
      * Tour de jeu
      */
-    public void gameTurn(){
+    public static void gameTurn(){
         Draw draw = new Draw();
         actualCardName = draw.drawRandomCard();
 
-        ArrayList<Player> copyPlayerList = new ArrayList<>(this.playerList);
+        ArrayList<Player> copyPlayerList = new ArrayList<>(playerList);
         Scanner scanner = new Scanner(System.in);
         System.out.println("Un joueur est-il prêt ?");
-        String response = scanner.nextLine();
-        if(response.equals("ok")) {
+        String response = scanner.next();
+        if(response.contains("ok")) {
             //TODO créer fonction StartTimer
             //Time.startTimer();
-            if (countDownStart == 0) {
+            //if (countDownStart == 0) {
                 for(Player player : playerList) {
+                    int announcedMoveCount = 0;
                     System.out.println("Joueur " + player.getName() + ", rentrez nombre de coups : ");
-
+                    announcedMoveCount = scanner.nextInt();
+                    //Trie les joueurs en fonction du nombre de coups annoncés par chacuns
+                    sortPlayerByLessCountMap.put(announcedMoveCount, player );
                 }
-            }
+                Set<Integer> keys = sortPlayerByLessCountMap.keySet();
+                for(Integer key : keys){
+                    Player actualPlayer = sortPlayerByLessCountMap.get(key);
+                    System.out.println("Joueur " + actualPlayer.getName() + ", c'est votre tour de déplacez un robot : ");
+                    System.out.println("Couleur du robot a déplacer : ");
+                    scanner.nextLine();
+                    String robotColor = scanner.nextLine();
+                    System.out.println("Nouvelles coordonnées du robot : ");
+                    String newRobotCoordinate = scanner.nextLine();
+                    String[] item = newRobotCoordinate.split(" ");
+                    int robotCellXPosition = parseInt(item[0]);
+                    int robotCellYPosition = parseInt(item[1]);
+                    for(Robot robot : robotList) {
+                        if (robot.getColor().toString().equals(robotColor)){
+                            Cell oldCell = robot.getCell();
+                            Cell newCell = new Cell(robotCellXPosition, robotCellYPosition);
+                            Player.moveARobot(new Robot(oldCell, robot.getColor()), newCell);
+                            //TODO actualiser le board
+                            DisplayGame.displayBoard();
+                        }
+                    }
+                }
+
+            //}
         }
+        //else{
+            //gameTurn();
+        //}
 
         //Ajoute un point au joueur ayant effectué le moins de coups
-        Counter.addWinnerPlayerAPoint(Player.playerWithLessMove());
+        //Counter.addWinnerPlayerAPoint(Player.playerWithLessMove());
 
         //if(Player.isReady(playerWithShortestPath) == true){
-        copyPlayerList.remove(playerWithShortestPath);
+        //copyPlayerList.remove(playerWithShortestPath);
 
         //}
     }
@@ -143,13 +178,13 @@ public class DisplayGame {
 
         ArrayList<Robot> robotList = Robot.getRobotList();
 
+        Initialization initialization = new Initialization();
+        initialization.initializeGame();
+        DisplayGame.playerNumberInitialization();
+        DisplayGame.playerNameInitialization();
+        DisplayGame.displayBoard();
+        DisplayGame.play();
 
-        DisplayGame displayGame = new DisplayGame();
-        /*displayGame.playerNumberInitialization();
-        displayGame.playerNameInitialization();*/
-        displayGame.play();
-
-        displayGame.displayBoard();
 
     }
 }

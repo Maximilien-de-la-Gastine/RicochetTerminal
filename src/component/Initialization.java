@@ -122,15 +122,13 @@ public class Initialization {
          *Placement aléatoire des robots sur le board
          */
         public void createRobot() {
-            for (int i = 0; i < 4; i++) {
-                Color color = Color.RED;
+            for (Color color : Color.values()) {
                 //On crée la cellule aléatoire du robot ou il n'y a pas de carte
                 Cell robotCell = getRandomCellWithoutCard();
                 //On supprime la cellule du robot de la liste pour ne pas placer 2 robots au même endroit
                 cellListWhitoutCard.remove(robotCell);
                 Robot robot = new Robot(robotCell, color);
                 robotList.add(robot);
-                color = color.next();
             }
         }
 

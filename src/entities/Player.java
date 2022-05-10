@@ -39,7 +39,11 @@ public class Player {
     //Nombre de coups effectués par le joueur
     private static int realMoveCount;
     //Nombre de coups annoncés par le joueur
-    private int announcedMoveCount;
+    private static int  announcedMoveCount;
+
+    public static int getAnnouncedMoveCount() {
+        return announcedMoveCount;
+    }
 
     public static int getRealMoveCount() {
         return realMoveCount;
@@ -71,7 +75,7 @@ public class Player {
      * @param robot
      * @param newCell
      */
-    public void moveARobot(Robot robot, Cell newCell){
+    public static void moveARobot(Robot robot, Cell newCell){
         robot.changeRobotCell(robot, newCell);
     }
 
