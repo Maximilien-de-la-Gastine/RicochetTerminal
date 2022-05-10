@@ -120,7 +120,7 @@ public class Robot {
             }
         }
     }
-    //TDO refaire cette methode pour right et bottom
+    //TODO refaire cette methode pour right et bottom
 
 
     /**
@@ -156,7 +156,13 @@ public class Robot {
      */
     public void changeRobotCell(Robot robot, Cell newCell) {
         if (isValidMove(newCell)) {
-            robot.setCell(newCell);
+            for(Robot oldRobot : robotList){
+                if(oldRobot == robot){
+                    robotList.remove(oldRobot);
+                    robot.setCell(newCell);
+                    robotList.add(robot);
+                }
+            }
             Player.getRealMoveCount();
         }
     }

@@ -24,6 +24,9 @@ public class DisplayGame {
 
     private static int countDownStart = Time.getCountdownStarter();
 
+
+    private static ArrayList<Cell> authorizedPositions = Robot.getAuthorizedPosition();
+
 //private int  announcedMoveCount = Player.getAnnouncedMoveCount();
     private static TreeMap<Integer, Player> sortPlayerByLessCountMap = Play.getSortPlayerByLessCountMap();
 
@@ -119,6 +122,8 @@ public class DisplayGame {
         actualCardName = draw.drawRandomCard();
 
         ArrayList<Player> copyPlayerList = new ArrayList<>(playerList);
+
+        DisplayGame.displayBoard();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Un joueur est-il prêt ?");
         String response = scanner.next();
@@ -146,10 +151,14 @@ public class DisplayGame {
                     int robotCellXPosition = parseInt(item[0]);
                     int robotCellYPosition = parseInt(item[1]);
                     for(Robot robot : robotList) {
+
                         if (robot.getColor().toString().equals(robotColor)){
+                            System.out.println(robot.getCell().getRow());
+                            System.out.println(robot.getCell().getCol());
                             Cell oldCell = robot.getCell();
                             Cell newCell = new Cell(robotCellXPosition, robotCellYPosition);
                             Player.moveARobot(new Robot(oldCell, robot.getColor()), newCell);
+                            System.out.println(authorizedPositions);
                             //TODO actualiser le board
                             DisplayGame.displayBoard();
                         }
@@ -178,11 +187,10 @@ public class DisplayGame {
 
         ArrayList<Robot> robotList = Robot.getRobotList();
 
-        Initialization initialization = new Initialization();
-        initialization.initializeGame();
+        //Initialization initialization = new Initialization();
+        //initialization.initializeGame();
         DisplayGame.playerNumberInitialization();
         DisplayGame.playerNameInitialization();
-        DisplayGame.displayBoard();
         DisplayGame.play();
 
 
