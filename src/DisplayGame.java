@@ -180,8 +180,9 @@ public class DisplayGame {
         //}
     }
 
-
-
+//TODO pour améliorer le code : utliser opérateur ternaire, utilsier constructeur et fction dans énum,
+//    initialiser directement dans contructeur
+// METTRE LE JEU DANS SITE REACT
 
     public static void main(String[] args) throws FileNotFoundException {
 

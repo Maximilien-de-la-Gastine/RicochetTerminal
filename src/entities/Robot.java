@@ -4,7 +4,6 @@ package entities;
 import component.Play;
 
 import java.util.ArrayList;
-import java.util.Spliterator;
 
 public class Robot {
 
@@ -62,15 +61,15 @@ public class Robot {
      *
      * @param cell
      * @return false is la cellule ne comporte pas de murs
-
-    public boolean isWallOnCell(Cell cell) {
-        for (Wall wall : wallList) {
-            if (wall.getCell().equals(cell)) {
-                return true;
-                break;
-            }
-        }
-    }
+     * <p>
+     * public boolean isWallOnCell(Cell cell) {
+     * for (Wall wall : wallList) {
+     * if (wall.getCell().equals(cell)) {
+     * return true;
+     * break;
+     * }
+     * }
+     * }
      */
 
     int[] cellPositionList = new int[4];
@@ -89,6 +88,36 @@ public class Robot {
         wallDirectionList[1] = "top";
         wallDirectionList[2] = "right";
         wallDirectionList[3] = "bottom";
+    }
+
+    public boolean getPosition(Robot robot, Cell cell) {
+        if (robot.getCell().getCol() == cell.getCol()) {
+            if (robot.getCell().getRow() < cell.getRow()) {
+                for (int i = 0; i < (cell.getRow() - robot.getCell().getRow() - 1); i++) {
+                    for (Wall wall : wallList) {
+                        if (wall.getCell().getRow() == i && wall.getDirection().equals("bottom") && wall.getCell().getCol() == robot.getCell().getCol()) {
+                            return false;
+                        }
+                    }
+                    if(i == )
+                }
+
+
+
+                for (int i = 0; i < (cell.getCol() - robot.getCell().getRow() - 1); i++) {
+                    for (Wall wall : wallList) {
+                        if (wall.getCell().getRow() == i && wall.getDirection().equals("bottom") && wall.getCell().getCol() == robot.getCell().getCol()) {
+                            return false;
+                        }
+                    }
+                }
+
+            }
+
+        }
+        if (robot.getCell().getRow() == cell.getRow()) {
+
+        }
     }
 
     //TODO refaire cette méthode plus simplement
@@ -156,8 +185,8 @@ public class Robot {
      */
     public void changeRobotCell(Robot robot, Cell newCell) {
         if (isValidMove(newCell)) {
-            for(Robot oldRobot : robotList){
-                if(oldRobot == robot){
+            for (Robot oldRobot : robotList) {
+                if (oldRobot == robot) {
                     robotList.remove(oldRobot);
                     robot.setCell(newCell);
                     robotList.add(robot);
@@ -174,22 +203,14 @@ public class Robot {
      * @return
      */
     public boolean isRobotOnCard(Robot robot) {
-        for(Card card : cardList){
-            if((card.getCardName() == actualCardName) && (robot.getCell() == card.getCell())){
+        for (Card card : cardList) {
+            if ((card.getCardName() == actualCardName) && (robot.getCell() == card.getCell())) {
                 return true;
             }
         }
         return false;
 
     }
-
-
-
-
-
-
-
-
 
 
 }
