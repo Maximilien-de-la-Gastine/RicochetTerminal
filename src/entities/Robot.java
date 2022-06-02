@@ -91,33 +91,71 @@ public class Robot {
     }
 
     public boolean getPosition(Robot robot, Cell cell) {
-        if (robot.getCell().getCol() == cell.getCol()) {
-            if (robot.getCell().getRow() < cell.getRow()) {
-                for (int i = 0; i < (cell.getRow() - robot.getCell().getRow() - 1); i++) {
+        int colRobot = robot.getCell().getCol();
+        int rowRobot = robot.getCell().getRow();
+        if (colRobot == cell.getCol()) {
+            int difference = cell.getRow() - rowRobot;
+            if ( difference > 0 ) {
+                for (int i = rowRobot; i <= cell.getRow(); i++) {
                     for (Wall wall : wallList) {
-                        if (wall.getCell().getRow() == i && wall.getDirection().equals("bottom") && wall.getCell().getCol() == robot.getCell().getCol()) {
+                        int rowWall = wall.getCell().getRow();
+                        int colWall = wall.getCell().getCol();
+                        if (rowWall == i && wall.getDirection().equals("bottom") && colWall == colRobot && i != cell.getRow()) {
                             return false;
                         }
-                    }
-                    if(i == )
-                }
-
-
-
-                for (int i = 0; i < (cell.getCol() - robot.getCell().getRow() - 1); i++) {
-                    for (Wall wall : wallList) {
-                        if (wall.getCell().getRow() == i && wall.getDirection().equals("bottom") && wall.getCell().getCol() == robot.getCell().getCol()) {
-                            return false;
+                        if (rowWall == i && wall.getDirection().equals("bottom") && colWall == colRobot && i == cell.getRow()) {
+                            return true;
                         }
                     }
                 }
-
             }
-
+            if ( difference < 0 ) {
+                for (int i = rowRobot; i <= cell.getRow(); i--) {
+                    for (Wall wall : wallList) {
+                        int rowWall = wall.getCell().getRow();
+                        int colWall = wall.getCell().getCol();
+                        if (rowWall == i && wall.getDirection().equals("top") && colWall == colRobot && i != cell.getRow()) {
+                            return false;
+                        }
+                        if (rowWall == i && wall.getDirection().equals("top") && colWall == colRobot && i == cell.getRow()) {
+                            return true;
+                        }
+                    }
+                }
+            }
         }
         if (robot.getCell().getRow() == cell.getRow()) {
-
+            int difference = cell.getCol() - colRobot;
+            if ( difference > 0 ) {
+                for (int i = colRobot; i <= cell.getCol(); i++) {
+                    for (Wall wall : wallList) {
+                        int rowWall = wall.getCell().getRow();
+                        int colWall = wall.getCell().getCol();
+                        if (colWall == i && wall.getDirection().equals("right") && rowWall == rowRobot && i != cell.getCol()) {
+                            return false;
+                        }
+                        if (colWall == i && wall.getDirection().equals("right") && rowWall == rowRobot && i == cell.getCol()) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            if ( difference < 0 ) {
+                for (int i = colRobot; i <= cell.getCol(); i--) {
+                    for (Wall wall : wallList) {
+                        int rowWall = wall.getCell().getRow();
+                        int colWall = wall.getCell().getCol();
+                        if (colWall == i && wall.getDirection().equals("left") && rowWall == rowRobot && i != cell.getCol()) {
+                            return false;
+                        }
+                        if (colWall == i && wall.getDirection().equals("left") && rowWall == rowRobot && i == cell.getCol()) {
+                            return true;
+                        }
+                    }
+                }
+            }
         }
+        return false;
     }
 
     //TODO refaire cette méthode plus simplement
