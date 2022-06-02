@@ -47,7 +47,13 @@ public class Robot {
         return robotList;
     }
 
+    public static ArrayList<Robot> getClonedRobotList() {
+        return clonedRobotList;
+    }
+
+
     private static ArrayList<Robot> robotList = new ArrayList<>();
+    private static ArrayList<Robot> clonedRobotList = new ArrayList<>();
 
 
     public Robot(Cell cell, Color color) {
@@ -90,12 +96,19 @@ public class Robot {
         wallDirectionList[3] = "bottom";
     }
 
-    public boolean getPosition(Robot robot, Cell cell) {
+
+    /**
+     * Fonction qui vérifie si le mouvement est bien valide
+     *
+     * @return
+     */
+
+    public boolean isValidMove(Robot robot, Cell cell) {
         int colRobot = robot.getCell().getCol();
         int rowRobot = robot.getCell().getRow();
         if (colRobot == cell.getCol()) {
             int difference = cell.getRow() - rowRobot;
-            if ( difference > 0 ) {
+            if (difference > 0) {
                 for (int i = rowRobot; i <= cell.getRow(); i++) {
                     for (Wall wall : wallList) {
                         int rowWall = wall.getCell().getRow();
@@ -108,9 +121,10 @@ public class Robot {
                         }
                     }
                 }
+                return true;
             }
-            if ( difference < 0 ) {
-                for (int i = rowRobot; i <= cell.getRow(); i--) {
+            if (difference < 0) {
+                for (int i = rowRobot; i >= cell.getRow(); i--) {
                     for (Wall wall : wallList) {
                         int rowWall = wall.getCell().getRow();
                         int colWall = wall.getCell().getCol();
@@ -122,11 +136,12 @@ public class Robot {
                         }
                     }
                 }
+                return true;
             }
         }
         if (robot.getCell().getRow() == cell.getRow()) {
             int difference = cell.getCol() - colRobot;
-            if ( difference > 0 ) {
+            if (difference > 0) {
                 for (int i = colRobot; i <= cell.getCol(); i++) {
                     for (Wall wall : wallList) {
                         int rowWall = wall.getCell().getRow();
@@ -139,9 +154,10 @@ public class Robot {
                         }
                     }
                 }
+                return true;
             }
-            if ( difference < 0 ) {
-                for (int i = colRobot; i <= cell.getCol(); i--) {
+            if (difference < 0) {
+                for (int i = colRobot; i >= cell.getCol(); i--) {
                     for (Wall wall : wallList) {
                         int rowWall = wall.getCell().getRow();
                         int colWall = wall.getCell().getCol();
@@ -153,63 +169,18 @@ public class Robot {
                         }
                     }
                 }
-            }
-        }
-        return false;
-    }
-
-    //TODO refaire cette méthode plus simplement
-    public void getLeftAndTopPositions(Cell cell) {
-        //on initialise les listes de positions et le nombre de cellules à parcourir au maximum
-        initializeCellPositionList(cell);
-        initializeWallPositionList();
-        for (int j = 0; j < 2; j++) {
-            for (int i = 0; i <= cellPositionList[j]; i++) {
-                for (Wall wall : wallList) {
-                    if ((i == 0 && wall.getDirection() == wallDirectionList[j]) || cellPositionList[j] - i == 0) {
-                        if (j == 0) {
-                            authorizedPosition.add(board[cell.getRow() - i][cell.getCol()]);
-                        }
-                        if (j == 1) {
-                            authorizedPosition.add(board[cell.getRow()][cell.getCol() - i]);
-                        }
-                    }
-                    if (((cellPositionList[j] - i == wall.getCell().getRow()) && (wall.getDirection() == wallDirectionList[j + 2]))) {
-                        if (j == 0) {
-                            authorizedPosition.add(board[cell.getRow() - i][cell.getCol()]);
-                        }
-                        if (j == 1) {
-                            authorizedPosition.add(board[cell.getRow()][cell.getCol() - i]);
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    //TODO refaire cette methode pour right et bottom
-
-
-    /**
-     * Fonction qui vérifie si le mouvement est bien valide
-     *
-     * @param newCell
-     * @return
-     */
-    public boolean isValidMove(Cell newCell) {
-        for (Cell cell : authorizedPosition) {
-            if (newCell == cell) {
                 return true;
             }
         }
         return false;
     }
 
+
     @Override
     public String toString() {
         return "Robot{" +
                 "color=" + color +
-                ", cell=" + cell +
+                ", cell=" + cell.toString() +
                 '}';
     }
 
@@ -222,17 +193,27 @@ public class Robot {
      * @param newCell
      */
     public void changeRobotCell(Robot robot, Cell newCell) {
-        if (isValidMove(newCell)) {
+        if (isValidMove(robot, newCell)) {
             for (Robot oldRobot : robotList) {
-                if (oldRobot == robot) {
+                if (oldRobot.equals(robot)) {
                     robotList.remove(oldRobot);
                     robot.setCell(newCell);
                     robotList.add(robot);
+                    break;
                 }
             }
             Player.getRealMoveCount();
+        } else System.out.println("erreur");
+    }
+
+
+    public static void changeClonedList() {
+        for (Robot clonedRobot : clonedRobotList) {
+            robotList.clear();
+            robotList.add(clonedRobot);
         }
     }
+
 
     /**
      * Cette fonction return true si la cellule du robot est arrivée sur la carte piochée
@@ -250,5 +231,12 @@ public class Robot {
 
     }
 
+
+    @Override
+    public boolean equals(Object robot) {
+        if (this == robot) return true;
+        if (!(robot instanceof Robot)) return false;
+        return getCell() == ((Cell) cell) && getCell() == ((Cell) cell);
+    }
 
 }

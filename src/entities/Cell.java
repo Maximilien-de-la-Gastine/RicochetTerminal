@@ -37,6 +37,13 @@ public class Cell {
         return getRow() == ((Cell) cell).getRow() && getCol() == ((Cell) cell).getCol();
     }
 
+    @Override
+    public String toString() {
+        return "Cell{" +
+                "row=" + row +
+                ", col=" + col +
+                '}';
+    }
 }
 
 
